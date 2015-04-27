@@ -1,0 +1,39 @@
+{% load static %}
+{% block helptext-headers %}
+     <link rel="stylesheet" type="text/css" href="{% static 'helptext/qtip/jquery.qtip.css' %}" />
+     <script src="{% static 'helptext/qtip/jquery.qtip.js' %}"></script>
+
+        <style>
+            .hasTooltip{
+                text-decoration: underline;
+            }
+
+        </style>
+{% endblock helptext-headers %}
+{% block helptext-content %}
+
+        <script>
+            $(document).ready(function() {
+            {% for helptext in objects %}
+
+                $('{{helptext.selector.selector}}').qtip({
+                    content: {
+                        text: $('{{ helptext.content|safe }}')
+                    },
+                    style: {
+                        classes: '{{helptext.selected_classes}}'
+                    },
+                    position: {
+//                        my: 'top left',  // Position my top left...
+                        at: '{{helptext.position}}', // at the bottom right of...
+                        target: $('{{helptext.selector.selector}}') // my target
+                    },
+                    hide: {
+                        fixed: true
+                    }
+                 });
+                $('{{helptext.selector.selector}}').addClass('hasTooltip');
+             {% endfor %}
+             });
+    </script>
+{% endblock helptext-content %}
